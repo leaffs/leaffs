@@ -1,13 +1,24 @@
 package api
 
 import (
-	"encoding/json"
+	"leaffs/utils"
 	"net/http"
 )
 
-func Register(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"message": "Register API is working"})
-	}
+type Handler struct{}
+
+func NewHandler() *Handler {
+	return &Handler{}
+}
+
+func (h *Handler) RegisterRoutes(route *http.ServeMux) {
+	route.HandleFunc("POST /register", h.Register)
+}
+
+func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	utils.WriteJson(w, map[string]string{
+		"success": "true",
+		"message": "Register API is working",
+	})
 }
